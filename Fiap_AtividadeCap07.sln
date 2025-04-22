@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap_AtividadeCap07", "Fiap_AtividadeCap07\Fiap_AtividadeCap07.csproj", "{77575FBF-9CB7-45E0-958B-C64BC46E4EFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77575FBF-9CB7-45E0-958B-C64BC46E4EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77575FBF-9CB7-45E0-958B-C64BC46E4EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77575FBF-9CB7-45E0-958B-C64BC46E4EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77575FBF-9CB7-45E0-958B-C64BC46E4EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E240AD2-F0DC-4723-B74B-E8D352B18CF5}
+	EndGlobalSection
+EndGlobal

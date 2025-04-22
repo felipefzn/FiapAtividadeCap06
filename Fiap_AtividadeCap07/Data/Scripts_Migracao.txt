@@ -1,0 +1,16 @@
+﻿CREATE DATABASE TrafficManagment
+
+CREATE TABLE Acidentes (
+    Id INT PRIMARY KEY IDENTITY,
+    Descricao NVARCHAR(255),
+    Localizacao NVARCHAR(255),
+    Gravidade NVARCHAR(50),
+    DataHora DATETIME
+);
+
+CREATE TABLE Semaforos (
+    Id INT PRIMARY KEY IDENTITY,
+    Localizacao NVARCHAR(255),
+    CorAtual NVARCHAR(50),
+    UltimaTroca DATETIME
+);

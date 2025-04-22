@@ -1,0 +1,6 @@
+@Fiap_AtividadeCap07_HostAddress = http://localhost:5222
+
+GET {{Fiap_AtividadeCap07_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
