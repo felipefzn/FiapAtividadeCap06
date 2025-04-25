@@ -1,44 +1,23 @@
-name: Build and Push Docker Image
+name: Deploy to Azure
 
-# Define the trigger for the workflow
 on:
   push:
     branches:
-      - main  # Gatilho quando houver push para a branch 'main'
-  pull_request:
-    branches:
-      - main  # Gatilho quando uma pull request for criada para a branch 'main'
+      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # Usando a última versão do Ubuntu como ambiente
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
-    # 1. Check out o código
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # 2. Configuração do Docker
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    # 3. Log in no Docker Hub ou GitHub Container Registry
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
+    - name: Log in to Azure
+      uses: azure/login@v1
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}  # Usando secrets para login seguro
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # 4. Build e Push da Imagem Docker
-    - name: Build and Push Docker Image
-      uses: docker/build-push-action@v2
-      with:
-        context: .  # Diretório onde está o Dockerfile
-        file: ./Dockerfile  # Caminho do Dockerfile
-        push: true  # Para empurrar a imagem para o Docker Hub ou GitHub Container Registry
-        tags: username/repository:latest  # Substitua com seu usuário/repositório no Docker Hub ou GitHub Registry
-
-    # (Opcional) 5. Testar a imagem construída
-    - name: Run Docker Image
+    - name: Deploy to Azure Web App
       run: |
-        docker run --rm username/repository:latest
+        az webapp up --name <app-name> --resource-group <resource-group> --plan <app-service-plan>
