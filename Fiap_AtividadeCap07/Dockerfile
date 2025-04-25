@@ -10,12 +10,11 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia apenas o .csproj e restaura dependências
-COPY ["Fiap_AtividadeCap07/Fiap_AtividadeCap07.csproj", "Fiap_AtividadeCap07/"]
-RUN dotnet restore "Fiap_AtividadeCap07/Fiap_AtividadeCap07.csproj"
+COPY ["Fiap_AtividadeCap07.csproj", "."]
+RUN dotnet restore "Fiap_AtividadeCap07.csproj"
 
 # Copia o restante dos arquivos e compila
 COPY . .
-WORKDIR "/src/Fiap_AtividadeCap07"
 RUN dotnet build "Fiap_AtividadeCap07.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Etapa de publish
