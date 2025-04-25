@@ -1,0 +1,47 @@
+﻿trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - checkout: self
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - script: dotnet build Fiap_AtividadeCap07/Fiap_AtividadeCap07.csproj --configuration $(buildConfiguration)
+            displayName: 'Build Project'
+
+  - stage: DockerBuildPush
+    jobs:
+      - job: Docker
+        steps:
+          - checkout: self
+
+          - task: Docker@2
+            inputs:
+              containerRegistry: '<NomeDoContainerRegistry>'
+              repository: 'fiap/atividadecap07'
+              command: 'buildAndPush'
+              Dockerfile: '**/Dockerfile'
+              tags: |
+                $(Build.BuildId)
+                latest
+
+  - stage: DeployStaging
+    jobs:
+      - job: Deploy
+        steps:
+          - script: echo "Simular deploy no ambiente de staging"
+            displayName: "Deploy Staging"
