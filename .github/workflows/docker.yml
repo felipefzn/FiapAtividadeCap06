@@ -1,23 +1,50 @@
-name: Deploy to Azure
+name: Build and Push Docker Image
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      # Checkout do código fonte
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Log in to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # Logar no Docker Hub usando os secrets configurados no GitHub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Deploy to Azure Web App
-      run: |
-        az webapp up --name <app-name> --resource-group <resource-group> --plan <app-service-plan>
+      # Construir a imagem Docker
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/fiap_app:latest .
+
+      # Enviar a imagem para o Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/fiap_app:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # Checkout do código novamente
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Realizar deploy, aqui você pode adicionar seu processo de deploy
+      # Exemplo de como fazer deploy para algum serviço, como o Azure, AWS, etc.
+      - name: Deploy to Cloud (substitua isso com seu processo de deploy)
+        run: |
+          echo "Deploying the app to the cloud"
