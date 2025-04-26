@@ -19,7 +19,9 @@ jobs:
         dotnet-version: '5.0'
 
     - name: Install OpenSSL dependencies
-      run: sudo apt-get update && sudo apt-get install -y libssl-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libssl1.1
 
     - name: Restore dependencies
       run: dotnet restore
