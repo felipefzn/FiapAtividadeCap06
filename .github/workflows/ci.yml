@@ -10,6 +10,7 @@ on:
       - master
 
 jobs:
+  # Job de Build e Teste
   build-and-test:
     runs-on: ubuntu-latest
 
@@ -31,6 +32,7 @@ jobs:
       - name: Test
         run: dotnet test
 
+  # Job de Deploy para Staging
   deploy-to-staging:
     runs-on: ubuntu-latest
     needs: build-and-test
@@ -43,13 +45,16 @@ jobs:
       - name: Deploy to Staging
         run: |
           echo "Deploying to staging..."
-          # Adicione comandos para deploy no ambiente de staging
-          # Exemplo:
-          # ssh user@staging-server 'docker pull my-image && docker-compose up -d'
+          # Aqui você coloca os comandos reais para fazer o deploy no seu servidor de staging.
+          # Exemplo de deploy via SSH ou para uma plataforma:
+          # ssh user@staging-server 'docker pull your-docker-image && docker-compose up -d'
+          
+          # Se estiver usando uma plataforma como AWS, GCP ou Azure, substitua por comandos específicos
 
+  # Job de Deploy para Produção
   deploy-to-production:
     runs-on: ubuntu-latest
-    needs: deploy-to-staging
+    needs: deploy-to-staging  # Esse job depende do sucesso do deploy em staging
     if: github.ref == 'refs/heads/master'  # Apenas faz deploy para produção quando o push for na branch master
 
     steps:
@@ -59,6 +64,8 @@ jobs:
       - name: Deploy to Production
         run: |
           echo "Deploying to production..."
-          # Adicione comandos para deploy no ambiente de produção
-          # Exemplo:
-          # ssh user@production-server 'docker pull my-image && docker-compose up -d'
+          # Aqui você coloca os comandos reais para fazer o deploy no seu servidor de produção.
+          # Exemplo de deploy via SSH ou para uma plataforma:
+          # ssh user@production-server 'docker pull your-docker-image && docker-compose up -d'
+          
+          # Se estiver usando uma plataforma como AWS, GCP ou Azure, substitua por comandos específicos
