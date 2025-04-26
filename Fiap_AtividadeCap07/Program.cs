@@ -9,20 +9,16 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Leitura do ambiente: Development, Staging, Production
 var environment = builder.Environment.EnvironmentName;
 
-// Configuração do banco de dados com base no ambiente
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Injeção de dependências
 builder.Services.AddScoped<IAcidenteService, AcidenteService>();
 builder.Services.AddScoped<IAcidenteRepository, AcidenteRepository>();
 builder.Services.AddScoped<ISemaforoService, SemaforoService>();
 builder.Services.AddScoped<ISemaforoRepository, SemaforoRepository>();
 
-// JWT (caso queira adicionar autenticação)
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
