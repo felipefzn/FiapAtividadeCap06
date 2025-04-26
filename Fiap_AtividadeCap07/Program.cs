@@ -42,7 +42,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Ativa o Swagger em Development e Staging
 if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Staging")
 {
     app.UseSwagger();
