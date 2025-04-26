@@ -3,7 +3,7 @@ name: Build Docker Image
 on:
   push:
     branches:
-      - master  # Ou qualquer outra branch que você desejar monitorar
+      - master
   pull_request:
     branches:
       - master

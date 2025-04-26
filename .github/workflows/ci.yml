@@ -7,7 +7,6 @@ on:
       - staging
 
 jobs:
-  # Job de Build e Teste
   build-and-test:
     runs-on: ubuntu-latest
 
@@ -29,7 +28,6 @@ jobs:
       - name: Test
         run: dotnet test
 
-  # Job de Deploy para Staging
   deploy-to-staging:
     runs-on: ubuntu-latest
     needs: build-and-test
@@ -44,7 +42,6 @@ jobs:
           echo "Deploying to staging..."
           # comandos reais para deploy no staging
 
-  # Job de Deploy para Produção
   deploy-to-production:
     runs-on: ubuntu-latest
     needs: build-and-test
