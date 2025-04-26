@@ -16,12 +16,7 @@ jobs:
     - name: Set up .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0'
-
-    - name: Install OpenSSL dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libssl1.1
+        dotnet-version: '6.0'
 
     - name: Restore dependencies
       run: dotnet restore
