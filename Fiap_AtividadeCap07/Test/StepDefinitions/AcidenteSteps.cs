@@ -1,11 +1,14 @@
 ﻿using FluentAssertions;
 using Fiap_AtividadeCap07.Controllers;
-using Fiap_AtividadeCap07.Models;
+using Fiap_AtividadeCap07.DTOs;
 using Fiap_AtividadeCap07.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using TechTalk.SpecFlow;
+using Moq.Language.Flow;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
 namespace Fiap_AtividadeCap07.Test.StepDefinitions
@@ -15,18 +18,25 @@ namespace Fiap_AtividadeCap07.Test.StepDefinitions
     {
         private readonly Mock<IAcidenteService> _serviceMock = new();
         private AcidenteController _controller;
-        private ActionResult<IEnumerable<DTOs.AcidenteDTO>> _result;
+        private ActionResult<IEnumerable<AcidenteDTO>> _result;
+
+        private List<AcidenteDTO> _acidentes;
 
         [Given(@"que existem acidentes cadastrados")]
         public void GivenQueExistemAcidentesCadastrados()
         {
-            var acidentes = new List<AcidenteDTO>
+            // Criando uma lista explícita de acidentes com o tipo Models.AcidenteDTO
+            var acidentes = new List<Models.AcidenteDTO>
             {
-                new() { Descricao = "Acidente 1", Localizacao = "A", DataHora = DateTime.Now },
-                new() { Descricao = "Acidente 2", Localizacao = "B", DataHora = DateTime.Now }
+                new Models.AcidenteDTO { Descricao = "Acidente 1", Localizacao = "A", DataHora = DateTime.Now },
+                new Models.AcidenteDTO { Descricao = "Acidente 2", Localizacao = "B", DataHora = DateTime.Now }
             };
 
-            _serviceMock.Setup(s => s.GetAllAcidentesAsync(1, 10)).ReturnsAsync(acidentes);
+            // Configurando o mock para retornar uma Task com a lista de Models.AcidenteDTO
+            _serviceMock
+                .Setup(s => s.GetAllAcidentesAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(Task.FromResult<IEnumerable<Models.AcidenteDTO>>(acidentes));  // Usando o tipo correto
+
             _controller = new AcidenteController(_serviceMock.Object);
         }
 
@@ -39,15 +49,15 @@ namespace Fiap_AtividadeCap07.Test.StepDefinitions
         [Then(@"a API deve retornar status 200")]
         public void ThenAApiDeveRetornarStatus200()
         {
-            _result.Should().BeOfType<OkObjectResult>();
+            _result.Result.Should().BeOfType<OkObjectResult>();
         }
 
-        //[Then(@"a lista deve conter (.*) acidentes")]
-        //public void ThenAListaDeveConterXAcidentes(int count)
-        //{
-        //    var okResult = _result as OkObjectResult;
-        //    var lista = okResult?.Value as IEnumerable<AcidenteDTO>;
-        //    lista.Should().HaveCount(count);
-        //}
+        [Then(@"a lista deve conter (.*) acidentes")]
+        public void ThenAListaDeveConterXAcidentes(int count)
+        {
+            var okResult = _result.Result as OkObjectResult;
+            var lista = okResult?.Value as IEnumerable<AcidenteDTO>;
+            lista.Should().HaveCount(count);
+        }
     }
 }

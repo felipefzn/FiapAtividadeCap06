@@ -1,11 +1,13 @@
 ﻿using FluentAssertions;
 using Fiap_AtividadeCap07.Controllers;
-using Fiap_AtividadeCap07.Models;
+using Fiap_AtividadeCap07.DTOs;
 using Fiap_AtividadeCap07.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using Fiap_AtividadeCap07.Models;
 
 namespace Fiap_AtividadeCap07.Test.StepDefinitions
 {
@@ -19,13 +21,16 @@ namespace Fiap_AtividadeCap07.Test.StepDefinitions
         [Given(@"que existem semáforos cadastrados")]
         public void GivenQueExistemSemaforosCadastrados()
         {
-            var semaforos = new List<SemaforoDTO>
+            var semaforos = new List<Models.SemaforoDTO>
             {
                 new() { CorAtual = "Verde", Localizacao = "A" },
                 new() { CorAtual = "Vermelho", Localizacao = "B" }
             };
 
-            _serviceMock.Setup(s => s.GetAllSemaforosAsync(1, 10)).ReturnsAsync(semaforos);
+            // Corrigindo a configuração do mock com ReturnsAsync
+            _serviceMock.Setup(s => s.GetAllSemaforosAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(Task.FromResult<IEnumerable<Models.SemaforoDTO>>(semaforos));
+
             _controller = new SemaforoController(_serviceMock.Object);
         }
 
@@ -38,15 +43,16 @@ namespace Fiap_AtividadeCap07.Test.StepDefinitions
         [Then(@"a API deve retornar status 200")]
         public void ThenAApiDeveRetornarStatus200()
         {
-            _result.Should().BeOfType<OkObjectResult>();
+            var okResult = _result.Result as OkObjectResult;
+            okResult.Should().NotBeNull();
         }
 
-        //[Then(@"a lista deve conter (.*) semáforos")]
-        //public void ThenAListaDeveConterXSemaforos(int count)
-        //{
-        //    var okResult = _result as OkObjectResult;
-        //    var lista = okResult?.Value as IEnumerable<SemaforoDTO>;
-        //    lista.Should().HaveCount(count);
-        //}
+        [Then(@"a lista deve conter (.*) semáforos")]
+        public void ThenAListaDeveConterXSemaforos(int count)
+        {
+            var okResult = _result.Result as OkObjectResult;
+            var lista = okResult?.Value as IEnumerable<DTOs.SemaforoDTO>;
+            lista.Should().HaveCount(count);
+        }
     }
 }

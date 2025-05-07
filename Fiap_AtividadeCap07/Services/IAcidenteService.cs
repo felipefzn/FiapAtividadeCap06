@@ -1,5 +1,7 @@
 ﻿using Fiap_AtividadeCap07.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Fiap_AtividadeCap07.Services
 {
