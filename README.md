@@ -79,5 +79,5 @@ A pipeline está configurada para:
 /Dockerfile                      # Dockerfile do projeto
 /README.md                       # Este arquivo
 /src/                            # Código-fonte do projeto
-/tests/                          # Projeto de testes
+/TestProject/                    # Projeto de testes
 ```
