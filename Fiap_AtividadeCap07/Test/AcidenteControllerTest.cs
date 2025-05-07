@@ -24,10 +24,10 @@ namespace Fiap_AtividadeCap07.Test
         public async Task GetAllAcidentes_ReturnsOkResult_WithAcidenteDTOs()
         {
             var acidenteDTOs = new List<AcidenteDTO>
-            {
-                new() { Descricao = "Acidente 1", Localizacao = "Local 1", DataHora = DateTime.Now },
-                new() { Descricao = "Acidente 2", Localizacao = "Local 2", DataHora = DateTime.Now }
-            };
+    {
+        new() { Descricao = "Acidente 1", Localizacao = "Local 1", DataHora = DateTime.Now },
+        new() { Descricao = "Acidente 2", Localizacao = "Local 2", DataHora = DateTime.Now }
+    };
 
             _acidenteServiceMock
                 .Setup(service => service.GetAllAcidentesAsync(It.IsAny<int>(), It.IsAny<int>()))
@@ -35,9 +35,15 @@ namespace Fiap_AtividadeCap07.Test
 
             var result = await _controller.GetAcidentes(1, 10);
 
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            // Verificando se o resultado é OkObjectResult
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+
+            // Acessando o valor retornado pela resposta
             var returnValue = Assert.IsAssignableFrom<IEnumerable<AcidenteDTO>>(okResult.Value);
+
+            // Verificando se o número de acidentes é o esperado
             Assert.Equal(2, returnValue.Count());
         }
+
     }
 }

@@ -35,9 +35,12 @@ namespace Fiap_AtividadeCap07.Test
 
             var result = await _controller.GetSemaforos(1, 10);
 
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            // Acesse o Result da ActionResult para verificar o OkObjectResult
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+
             var returnValue = Assert.IsAssignableFrom<IEnumerable<SemaforoDTO>>(okResult.Value);
             Assert.Equal(2, returnValue.Count());
         }
+
     }
 }

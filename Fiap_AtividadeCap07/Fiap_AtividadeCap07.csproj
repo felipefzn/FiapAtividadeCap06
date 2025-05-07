@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <SpecFlowFeatureFiles Remove="Test\Features\Acidente.feature" />
+    <SpecFlowFeatureFiles Remove="Test\Features\Semaforo.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="8.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
@@ -31,6 +36,32 @@
 
   <ItemGroup>
     <Folder Include="Scripts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Test\Features\Acidente.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </None>
+    <None Include="Test\Features\Semaforo.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Test\Features\Acidente.feature.cs">
+      <Visible>true</Visible>
+      <DependentUpon>%(Filename)</DependentUpon>
+      <DesignTime>true</DesignTime>
+      <AutoGen>true</AutoGen>
+    </Compile>
+    <Compile Update="Test\Features\Semaforo.feature.cs">
+      <Visible>true</Visible>
+      <DependentUpon>%(Filename)</DependentUpon>
+      <DesignTime>true</DesignTime>
+      <AutoGen>true</AutoGen>
+    </Compile>
   </ItemGroup>
 
 </Project>
